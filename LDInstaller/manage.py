@@ -5,6 +5,10 @@ import sys
 
 
 def main():
+
+    for dir, path, files in os.walk('.\\'):
+        print(dir)
+
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LDInstaller.settings')
     try:

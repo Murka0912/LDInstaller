@@ -1,0 +1,10 @@
+.mypoint {
+    list-style: none;
+}
+.mypoint li::before {
+    content: "\2022";
+    color: #00ace4;
+    margin-left: 10px;
+    display: inline-block;
+    width: 20px;
+}

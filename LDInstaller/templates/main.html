@@ -3,19 +3,27 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>test</title>
-
+    <link href="{%  static '/css/newbar.css' %}" rel="stylesheet">
+    <link href="{% static '/css/form1.css' %}" rel="stylesheet">
+    <link href="{% static '/css/form.css' %}" rel="stylesheet">
+    <link href="{% static '/css/321.css' %}" rel="stylesheet">
 </head>
-<body>
-<ul>
-    <li><a href="{% url 'upload' %}">upload</a></li>
-    <li><a href="#">install</a></li>
-    <li><a href="#">config</a></li>
-</ul>
+<body background="{% static 'jpg/fon.jpg' %}">
+{% include 'newbar.html' %}
 
-<h1>{{ OK }}</h1>
 
-<span>
-    {{ ls }}
-</span>
+<h1 style="position: relative">Доступные компоненты</h1>
+
+
+<ul class="mypoint">
+{% for comp in objects %}
+    <li style="margin-left: 50%; color: whitesmoke;font-size: 25px">{{ comp.nameComp }}, path: {{ comp.nameFilepath }}</li>
+    {% endfor %}
+    </ul>
+
+
+{% for f in ls %}
+    <pre style="margin-left: 50%">{{ f }}</pre>
+{% endfor %}
 </body>
 </html>
