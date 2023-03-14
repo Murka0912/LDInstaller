@@ -1,12 +1,27 @@
-from django.forms import ModelForm, TextInput, Select, ChoiceField, ModelChoiceField
+from django.forms import ModelForm, TextInput, Select, ChoiceField, ModelChoiceField, CheckboxSelectMultiple,MultipleChoiceField
 
 from .models import *
-
+FAVORITE_COLORS_CHOICES = [
+    ('blue', 'Blue'),
+    ('green', 'Green'),
+    ('black', 'Black'),
+]
 class RegForm(ModelForm):
+    FAVORITE_COLORS_CHOICES = [
+        ('blue', 'Blue'),
+        ('green', 'Green'),
+        ('black', 'Black'),
+    ]
     class Meta:
         model = Srv_map
         fields = ['Namesrv','ip_addr','Category','username','password','components']
-        #con_cat = ModelChoiceField(queryset=components.objects.all(), empty_label='fffff', to_field_name='cat')
+        favorite_colors = MultipleChoiceField(
+            required=False,
+            widget=CheckboxSelectMultiple,
+            choices=FAVORITE_COLORS_CHOICES,
+
+        )
+        con_cat = ModelChoiceField(queryset=components.objects.all(),widget=CheckboxSelectMultiple, empty_label='fffff', to_field_name='components')
         widgets ={
             'Name_srv':TextInput(attrs={
                 'placeholder':'Адрес сервера',
@@ -27,7 +42,9 @@ class RegForm(ModelForm):
             'password': TextInput(attrs={
                 'placeholder': 'password',
                 'style': '-moz-placeholder'
-            }),
+            })
+
+
 
 
 
