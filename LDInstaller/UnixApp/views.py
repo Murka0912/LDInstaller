@@ -20,10 +20,13 @@ def main(request):
 
 def add_srv(request):
     form = RegForm()
+    Comp_model = components.objects.all()
     if request.method =='POST':
         if form.is_valid():
+            countries = form.cleaned_data.get('favorite_colors')
             form.save()
-    return render(request,'env.html',{'form':form})
+    return render(request,'env.html',{'form':form,
+                                      'components':Comp_model})
 
 
 def upload(requset):
