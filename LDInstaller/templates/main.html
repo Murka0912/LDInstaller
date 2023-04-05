@@ -9,6 +9,7 @@
     <link href="{% static '/css/321.css' %}" rel="stylesheet">
 </head>
 <body background="{% static 'jpg/fon.jpg' %}">
+{% block content %}
 {% include 'newbar.html' %}
 
 
@@ -25,5 +26,6 @@
 {% for f in ls %}
     <pre style="margin-left: 50%">{{ f }}</pre>
 {% endfor %}
+{% endblock %}
 </body>
 </html>
