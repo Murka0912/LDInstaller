@@ -36,6 +36,7 @@ def list_files(dir):
     for path,folder,files in os.walk(dir):
         for f in files:
             dirs = path+'\\'+f
+            print('hello')
             fileslist.append(dirs)
         return path,files, fileslist
 host='172.29.17.130'
