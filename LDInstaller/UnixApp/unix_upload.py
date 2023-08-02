@@ -7,14 +7,16 @@ import base64
 def upload_to_unix(host,port,username,password, source_path, dest_path):
     transport = paramiko.Transport(host, port)
 
-    destination_path = dest_path
+
     print(dest_path)
 
     local_path = source_path  #if using google colab, this will work with no modifications. Otherwise, overwrite with your local file path to the file
     print(source_path)
     transport.connect(username = username, password = password)
     sftp = paramiko.SFTPClient.from_transport(transport)
-    sftp.put(local_path, destination_path)
+    for s_file in local_path:
+        print(s_file)
+        sftp.put(s_file, dest_path)
 
     sftp.close()
     transport.close()
@@ -33,12 +35,14 @@ def ssh_cli(host,port,username,password):
 
 def list_files(dir):
     fileslist= []
+    fileslist1 = {}
     for path,folder,files in os.walk(dir):
+        #print(path)
         for f in files:
             dirs = path+'\\'+f
-            print('hello')
-            fileslist.append(dirs)
-        return path,files, fileslist
+            fileslist1[f] = dirs
+        #print(fileslist1)
+        return  fileslist1
 host='172.29.17.130'
 port=22
 username='root'

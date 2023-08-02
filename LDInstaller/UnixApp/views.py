@@ -5,17 +5,14 @@ from . forms import RegForm
 from . models import Srv_map, components
 # Create your views here.
 def main(request):
-    test = 'by world'
-    path, files, filelist = unix_upload.list_files('.\\uploads\\')
+    filelist = unix_upload.list_files('.\\uploads\\')
     components.objects.all().delete()
+    print(filelist)
     for f in filelist:
-        print(f)
-
-
-        save= components.objects.create(nameComp=f, nameFilepath=f)
+        #print(f , filelist[f])
+        save= components.objects.create(nameComp=f, nameFilepath=filelist[f])
     model = components.objects.all()
-    return render(request,'main.html',{'files':files,
-                                       'objects':model})
+    return render(request,'main.html',{'objects':model})
 
 
 def add_srv(request):
@@ -30,6 +27,7 @@ def add_srv(request):
 
 
 def upload(requset):
+    print('upload')
     model = Srv_map.objects.all().filter(ip_addr='172.29.17.130')
     for g in model:
 
@@ -38,24 +36,27 @@ def upload(requset):
         password = g.password
 
         port = 22
+        print(f'host {host}')
 
-        path, files, filelist = unix_upload.list_files('.\\uploads\\')
-        print(filelist)
-        print(files)
+        filelist = unix_upload.list_files('.\\uploads\\')
+        #print(filelist)
+        s_dir = []
+        f_name = []
+        for f in filelist:
+            s_dir.append(filelist[f])
+            print('s_dir=',s_dir)
+
         k=0
-        for s in filelist:
-            for f in files:
-                print(s)
-                k+=1
-                uploading = unix_upload.upload_to_unix(host=host,
+
+        uploading = unix_upload.upload_to_unix(host=host,
                                                port=port,
                                                username=username,
                                                password=password,
-                                               source_path=s,
-                                               dest_path='/home/dimm/rpms1/'+f
+                                               source_path=s_dir,
+                                               dest_path='/home/dimm/new_cat/'
                                                )
 
-    return render(requset, 'main.html', {'OK':uploading
+    return render(requset, 'main.html', {'OK':"OK"
                                          })
 
 def ls(requset):
