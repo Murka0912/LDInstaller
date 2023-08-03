@@ -6,11 +6,22 @@ from . models import Srv_map, components
 # Create your views here.
 def main(request):
     filelist = unix_upload.list_files('.\\uploads\\')
-    components.objects.all().delete()
     print(filelist)
-    for f in filelist:
+    components.objects.all().delete()
+
+    destpath = '/home/dimm/new_cat/'
+    print(filelist)
+    install_file_name=''
+    with open('.\\uploads\\install.sh', 'w', encoding='utf-8') as install_file:
+
+        for f in filelist:
         #print(f , filelist[f])
-        save= components.objects.create(nameComp=f, nameFilepath=filelist[f])
+            save= components.objects.create(nameComp=f, nameFilepath=filelist[f])
+
+            if f !='install.sh':
+                install_file_name = install_file_name+destpath+f+' '
+        install_file.write('yum -y localinstall '+install_file_name)
+        install_file.close()
     model = components.objects.all()
     return render(request,'main.html',{'objects':model})
 
@@ -52,7 +63,7 @@ def upload(requset):
                                                port=port,
                                                username=username,
                                                password=password,
-                                               source_path=s_dir,
+                                               source_path=filelist,
                                                dest_path='/home/dimm/new_cat/'
                                                )
 
@@ -62,12 +73,12 @@ def upload(requset):
 def ls(requset):
     model = Srv_map.objects.all().filter(ip_addr='172.29.17.130')
     for a in model:
-        print(a.password)
         host = a.ip_addr
         username = a.username
         password = a.password
         port = 22
-        s = unix_upload.ssh_cli(host, port, username, password)
+        dest_path = '/home/dimm/new_cat/'
+        s,s1 = unix_upload.ssh_cli(host, port, username, password,dest_path)
         print(s)
     return render(requset, 'main.html',{'ls':s})
 
@@ -77,3 +88,13 @@ def file_list(request):
     return render(request,'main.html', {'files':files,
                                         'path':path,
                                         'filelist':filelist})
+
+def get_version(request):
+    model = Srv_map.objects.all().filter(ip_addr='172.29.17.130')
+    for a in model:
+        host = a.ip_addr
+        username = a.username
+        password = a.password
+        port = 22
+        versions = unix_upload.version_component(host,port,username,password)
+        return render(request, 'main.html', {'versions':versions})

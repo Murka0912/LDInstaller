@@ -24,8 +24,16 @@
 
 
 {% for f in ls %}
-    <pre style="margin-left: 50%">{{ f }}</pre>
+
+    <pre style="margin-left: 40% ">{{ f }}</pre>
+
 {% endfor %}
+
+    {% for version in versions %}
+        <pre style="margin-left: 40% ">{{ version }}</pre>
+    {% endfor %}
+
+
 {% endblock %}
 </body>
 </html>

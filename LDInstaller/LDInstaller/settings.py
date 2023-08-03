@@ -123,7 +123,7 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = [
     os.path.join(BASE_DIR, "static"),
-os.path.join(BASE_DIR, "uploads"),
+os.path.join(BASE_DIR, "../uploads"),
     ]
 #print(STATIC_ROOT)
 # Default primary key field type
