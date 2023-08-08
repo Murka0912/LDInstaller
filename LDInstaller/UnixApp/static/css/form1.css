@@ -87,8 +87,17 @@
 }
 .form-inner input[type="checkbox"] {
    position: absolute;
-   opacity: 0;
+    z-index: -1;
+    opacity: 0;
 }
+input[type="checkbox"]{
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    background-color: #1e7e34;
+
+}
+
 .form-inner input[type="submit"]{
    color:#ffffff
 }

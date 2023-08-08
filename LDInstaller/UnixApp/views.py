@@ -1,41 +1,45 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from . import unix_upload
-from . forms import RegForm
+from . forms import TableDataForm
 from . models import Srv_map, components
 # Create your views here.
 def main(request):
     filelist = unix_upload.list_files('.\\uploads\\')
-    print(filelist)
-    components.objects.all().delete()
+    #print(filelist)
+    srvs = Srv_map.objects.all()
+
+    #components.objects.all().delete()
 
     destpath = '/home/dimm/new_cat/'
-    print(filelist)
+    #print(filelist)
     install_file_name=''
     with open('.\\uploads\\install.sh', 'w', encoding='utf-8') as install_file:
 
         for f in filelist:
         #print(f , filelist[f])
-            save= components.objects.create(nameComp=f, nameFilepath=filelist[f])
+            save= components.objects.get_or_create(nameComp=f, nameFilepath=filelist[f])
 
             if f !='install.sh':
                 install_file_name = install_file_name+destpath+f+' '
         install_file.write('yum -y localinstall '+install_file_name)
         install_file.close()
     model = components.objects.all()
-    return render(request,'main.html',{'objects':model})
+    return render(request,'main.html',{'objects':model,'srvs':srvs})
 
 
 def add_srv(request):
-    form = RegForm()
-    Comp_model = components.objects.all()
+    form = TableDataForm(request.POST)
+    print('3')
     if request.method =='POST':
-        if form.is_valid():
-            countries = form.cleaned_data.get('favorite_colors')
-            form.save()
-    return render(request,'env.html',{'form':form,
-                                      'components':Comp_model})
 
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+        else:
+            print(form.errors)
+            form = TableDataForm()
+    return render(request, 'env.html', {'form': form})
 
 def upload(requset):
     print('upload')
@@ -83,11 +87,9 @@ def ls(requset):
     return render(requset, 'main.html',{'ls':s})
 
 def file_list(request):
-    path,files, filelist = unix_upload.list_files('.\\uploads\\')
+    files = unix_upload.list_files('.\\uploads\\')
     print(files)
-    return render(request,'main.html', {'files':files,
-                                        'path':path,
-                                        'filelist':filelist})
+    return render(request,'main.html', {'filels':files})
 
 def get_version(request):
     model = Srv_map.objects.all().filter(ip_addr='172.29.17.130')

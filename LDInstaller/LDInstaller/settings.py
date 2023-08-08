@@ -14,7 +14,7 @@ from pathlib import Path
 import os,sys
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-#print('dirs = ', BASE_DIR)
+
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT,'apps'))
 
@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'UnixApp'
+    'UnixApp',
+    'crispy_forms',
+    'crispy_templates',
+    'cri'
 ]
 
 MIDDLEWARE = [
@@ -119,8 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = "media/"
 
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # This is now a string
 STATIC_ROOT = [
     os.path.join(BASE_DIR, "static"),
 os.path.join(BASE_DIR, "../uploads"),
@@ -130,3 +134,8 @@ os.path.join(BASE_DIR, "../uploads"),
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# default form
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap5'

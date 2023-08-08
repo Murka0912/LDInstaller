@@ -13,7 +13,7 @@ def upload_to_unix(host,port,username,password, source_path, dest_path):
     transport.connect(username = username, password = password)
     sftp = paramiko.SFTPClient.from_transport(transport)
     for s_file in source_path:
-        print(s_file)
+        #print(s_file)
         sftp.put(source_path[s_file], dest_path+s_file)
 
     sftp.close()
@@ -53,11 +53,11 @@ def list_files(dir):
             fileslist1[f] = dirs
         print(fileslist1)
         return  fileslist1
-host='172.29.17.130'
+"""host='172.29.17.130'
 port=22
 username='root'
 password='Landocs123'
-
+"""
 
 """dest_path = '/home/dimm/new_cat/'
 s,s1  = ssh_cli(host, port, username, password,dest_path)
