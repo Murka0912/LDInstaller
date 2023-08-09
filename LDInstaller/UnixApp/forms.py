@@ -10,7 +10,7 @@ class TableDataForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'my_from'
-        self.helper.form_class = 'blueForms'
+        self.helper.form_class = 'search'
         self.helper.form_method = 'post'
 
 
@@ -29,7 +29,7 @@ class TableDataForm(ModelForm):
 
         fields = ['Namesrv','Category','ip_addr','username','password', 'components']
 
-        """widgets = {
+        widgets = {
             'Namesrv': TextInput(attrs={
                 'placeholder': 'DNS имя',
                 'style': '-moz-placeholder',
@@ -54,6 +54,6 @@ class TableDataForm(ModelForm):
                 'class':'custom-radio',
                 'placeholder': 'Пароль'
             })
-        }"""
+        }
 
 

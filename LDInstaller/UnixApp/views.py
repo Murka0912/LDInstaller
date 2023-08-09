@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from . import unix_upload
+
+import os
 from . forms import TableDataForm
 from . models import Srv_map, components
 # Create your views here.
@@ -14,16 +16,16 @@ def main(request):
     destpath = '/home/dimm/new_cat/'
     #print(filelist)
     install_file_name=''
-    with open('.\\uploads\\install.sh', 'w', encoding='utf-8') as install_file:
+    #with open('.\\uploads\\install.sh', 'w', encoding='utf-8') as install_file:
 
-        for f in filelist:
+    for f in filelist:
         #print(f , filelist[f])
-            save= components.objects.get_or_create(nameComp=f, nameFilepath=filelist[f])
+        save= components.objects.update_or_create(nameComp=f, nameFilepath=filelist[f])
 
-            if f !='install.sh':
-                install_file_name = install_file_name+destpath+f+' '
-        install_file.write('yum -y localinstall '+install_file_name)
-        install_file.close()
+            #if f !='install.sh':
+                #install_file_name = install_file_name+destpath+f+' '
+        #install_file.write('yum -y localinstall '+install_file_name)
+        #install_file.close()
     model = components.objects.all()
     return render(request,'main.html',{'objects':model,'srvs':srvs})
 
@@ -32,8 +34,24 @@ def add_srv(request):
     form = TableDataForm(request.POST)
     print('3')
     if request.method =='POST':
-
+        install_file_name = ''
+        destpath = '/home/dimm/new_cat/'
         if form.is_valid():
+            print(form.cleaned_data['Namesrv'])
+            try:
+
+                os.mkdir('.\\uploads\\' + str(form.cleaned_data['Namesrv']))
+
+            except FileExistsError: print('Path exists, don\'t create')
+            install_path = '.\\uploads\\' + str(form.cleaned_data['Namesrv'])
+            with open(install_path+'\\install.sh', 'w', encoding='utf-8') as install_file:
+
+                for a in form.cleaned_data['components']:
+                    print(a)
+                    if a != 'install.sh':
+                        install_file_name = install_file_name + destpath + str(a) + ' '
+                install_file.write('yum -y localinstall ' + install_file_name)
+                install_file.close()
             form.save()
             return redirect('index')
         else:
